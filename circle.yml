@@ -1,0 +1,19 @@
+machine:
+   services:
+      - docker
+
+dependencies:
+   override:
+      - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+      - cd docker; docker build -t amaline/kubtest . 
+
+test:
+   override:
+      - docker inspect amaline/kubtest
+
+deployment:
+  hub:
+   branch: master
+   commands:
+    - docker push amaline/kubtest
+   
